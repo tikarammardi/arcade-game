@@ -14,6 +14,7 @@ class Game:
         pygame.display.set_caption("Arcade Game")
         self.clock = pygame.time.Clock()
         self.running = True
+        self.game_over = False
         self.player = Player(settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT - 50)
         self.bullets = []
         self.aliens = []
@@ -22,6 +23,7 @@ class Game:
         self.score = 0
 
         self.font = pygame.font.Font(None, 36)
+        self.game_over_font = pygame.font.Font(None, 72)
 
     def run(self):
         while self.running:
@@ -42,6 +44,16 @@ class Game:
                 self.running = False
             if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
                 self.shoot_bullet()
+            if self.game_over and event.type == pygame.KEYDOWN and event.key == pygame.K_r:
+                self.reset_game()
+
+    def reset_game(self):
+        self.game_over = False
+        self.score = 0
+        self.player.rect.x = settings.SCREEN_WIDTH // 2
+        self.bullets.clear()
+        self.aliens.clear()
+        self.create_aliens()
 
     def shoot_bullet(self):
         bullet_x = self.player.rect.centerx
@@ -64,6 +76,13 @@ class Game:
 
         self.update_aliens()
         self.check_collisions()
+        self.check_game_over()
+
+    def check_game_over(self):
+        for alien in self.aliens:
+            if alien.rect.bottom >= settings.SCREEN_HEIGHT:
+                self.game_over = True
+                break
 
     def draw(self):
         self.screen.fill(settings.BACKGROUND_COLOR)
@@ -79,6 +98,14 @@ class Game:
     def display_score(self):
         score_text = self.font.render(f"Score: {self.score}", True, (255, 255, 255))
         self.screen.blit(score_text, (10, 10))
+        # Display game over message
+        if self.game_over:
+            game_over_text = self.game_over_font.render("GAME OVER", True, (255, 0, 0))
+            restart_text = self.font.render("Press 'R' to Restart", True, (255, 255, 255))
+            self.screen.blit(game_over_text, (settings.SCREEN_WIDTH // 2 - 100, settings.SCREEN_HEIGHT // 2 - 30))
+            self.screen.blit(restart_text, (settings.SCREEN_WIDTH // 2 - 120, settings.SCREEN_HEIGHT // 2 + 20))
+
+        pygame.display.flip()
 
     def update_aliens(self ):
         move_down = False
