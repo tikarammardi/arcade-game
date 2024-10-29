@@ -118,3 +118,45 @@ If assets (e.g., images or sounds) aren’t loading in the executable:
 ### Diagrams
 [![Repo Name](./class_diagram.svg)](https://github.com/tikarammardi/arcade-game)
 
+## Features
+
+### Completed Features
+- [x] Player Movement and Controls
+- [x] Shooting Mechanism (Bullets)
+- [x] Alien Spawning and Movement
+- [x] Dropping Aliens (Vertical Alien Movement)
+- [x] Score Tracking and High Score Saving
+- [x] Power-Ups System
+   - [x] Rapid Fire Power-Up
+   - [x] Invincibility Power-Up
+- [x] Game Over Logic
+   - [x] Game Over on Alien Reaching Danger Zone
+   - [x] Game Over on Dropping Alien Collision
+- [x] Game Rendering
+- [x] Sound Effects for Actions (Shooting, Alien Destruction, Power-Ups)
+- [x] Standalone Executable Build Script (with `Makefile` and `pyinstaller`)
+- [x] Settings Configuration
+
+### Planned Features (To-Do)
+- [ ] Enhanced Power-Ups
+   - [ ] Speed Boost Power-Up
+   - [ ] Multi-Shot Power-Up
+   - [ ] Shield Power-Up
+- [ ] Level Progression
+   - [ ] Increasing Difficulty with Levels
+   - [ ] Boss Alien with Special Abilities
+- [ ] Additional Visual Effects
+   - [ ] Alien Explosion Animation
+   - [ ] Invincibility Glow Effect
+- [ ] Background Music and Additional Sound Effects
+   - [ ] Looping Background Music
+   - [ ] Unique Sounds for Different Power-Ups and Alien Types
+- [ ] Score-Based Rewards
+   - [ ] Extra Life on Milestone Scores
+   - [ ] Random Power-Up Reward on High Scores
+- [ ] High Score Leaderboard
+   - [ ] Local High Score List
+   - [ ] Online Leaderboard (Future Extension)
+
+---
+
