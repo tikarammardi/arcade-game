@@ -2,6 +2,7 @@
 import pygame
 
 from app import settings
+from app.bullet import Bullet
 from app.player import Player
 
 
@@ -13,6 +14,7 @@ class Game:
         self.clock = pygame.time.Clock()
         self.running = True
         self.player = Player(settings.SCREEN_WIDTH // 2, settings.SCREEN_HEIGHT - 50)
+        self.bullets = []
 
     def run(self):
         while self.running:
@@ -25,6 +27,14 @@ class Game:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 self.running = False
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_SPACE:
+                self.shoot_bullet()
+
+    def shoot_bullet(self):
+        bullet_x = self.player.rect.centerx
+        bullet_y = self.player.rect.top
+        bullet = Bullet(bullet_x, bullet_y)
+        self.bullets.append(bullet)
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -33,9 +43,17 @@ class Game:
         if keys[pygame.K_RIGHT]:
             self.player.move(1)
 
+        for bullet in self.bullets[:]:
+            bullet.update()
+            # Remove bullets that have moved off-screen
+            if bullet.rect.bottom < 0:
+                self.bullets.remove(bullet)
+
     def draw(self):
         self.screen.fill(settings.BACKGROUND_COLOR)
         self.player.draw(self.screen)
+        for bullet in self.bullets:
+            bullet.draw(self.screen)
         pygame.display.flip()
 
 if __name__ == "__main__":
