@@ -20,3 +20,8 @@ ALIEN_COLOR = (255, 0, 0)
 ALIEN_WIDTH = 40
 ALIEN_HEIGHT = 30
 ALIEN_SPEED = 2
+
+
+# Number of rows and columns of aliens
+NUM_ALIEN_ROWS = 3
+NUM_ALIEN_COLS = 10
