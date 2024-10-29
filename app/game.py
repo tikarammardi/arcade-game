@@ -19,6 +19,9 @@ class Game:
         self.aliens = []
         self.alien_direction = 1 # 1 for right, -1 for left
         self.create_aliens()
+        self.score = 0
+
+        self.font = pygame.font.Font(None, 36)
 
     def run(self):
         while self.running:
@@ -60,14 +63,7 @@ class Game:
                 self.bullets.remove(bullet)
 
         self.update_aliens()
-
-        # Check for collisions between bullets and aliens
-        for bullet in self.bullets[:]:
-            for alien in self.aliens[:]:
-                if bullet.rect.colliderect(alien.rect):
-                    self.bullets.remove(bullet)
-                    self.aliens.remove(alien)
-                    break
+        self.check_collisions()
 
     def draw(self):
         self.screen.fill(settings.BACKGROUND_COLOR)
@@ -76,7 +72,13 @@ class Game:
             bullet.draw(self.screen)
         for alien in self.aliens:
             alien.draw(self.screen)
+
+        self.display_score()
         pygame.display.flip()
+
+    def display_score(self):
+        score_text = self.font.render(f"Score: {self.score}", True, (255, 255, 255))
+        self.screen.blit(score_text, (10, 10))
 
     def update_aliens(self ):
         move_down = False
@@ -90,7 +92,14 @@ class Game:
             self.alien_direction *= -1
             for alien in self.aliens:
                 alien.drop_down()
-
+    def check_collisions(self):
+        for bullet in self.bullets[:]:
+            for alien in self.aliens[:]:
+                if bullet.rect.colliderect(alien.rect):
+                    self.bullets.remove(bullet)
+                    self.aliens.remove(alien)
+                    self.score += 1
+                    break
 if __name__ == "__main__":
     game = Game()
     game.run()
