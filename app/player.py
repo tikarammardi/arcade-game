@@ -5,6 +5,7 @@ class Player:
     def __init__(self,x, y):
         self.rect = pygame.Rect(x, y, settings.PLAYER_WIDTH, settings.PLAYER_HEIGHT)
         self.color = settings.PLAYER_COLOR
+        self.shoot_delay = settings.NORMAL_SHOOT_DELAY
 
     def move(self, dx):
         self.rect.x += dx * settings.PLAYER_SPEED
