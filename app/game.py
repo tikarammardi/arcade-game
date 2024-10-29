@@ -117,13 +117,22 @@ class Game:
 
 
     def check_game_status(self):
-        if self.alien_manager.all_aliens_defeated():
-            self.won = True
-            self.score_manager.save_high_score()
-        elif self.alien_manager.check_alien_reached_bottom():
-            self.game_over = True
-            self.score_manager.save_high_score()
-            self.game_over_sound.play()  # Play game-over sound
+        # Check if any horizontal-moving alien has crossed the danger zone
+        for alien in self.alien_manager.aliens:
+            if not alien.is_dropping and alien.rect.bottom >= settings.DANGER_ZONE_Y:
+                self.game_over = True
+                self.score_manager.save_high_score()
+                self.game_over_sound.play()
+                return  # End the check if game over is triggered
+
+        # Check if any dropping alien collides with the player
+        if not self.power_up_manager.is_invincible:
+            for alien in self.alien_manager.aliens:
+                if alien.is_dropping and self.player.rect.colliderect(alien.rect):
+                    self.game_over = True
+                    self.score_manager.save_high_score()
+                    self.game_over_sound.play()
+                    return  # End the check if game over is triggered
 
     def check_collisions(self):
         for bullet in self.bullets[:]:

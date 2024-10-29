@@ -54,3 +54,9 @@ SOUND_SHOOT = os.path.join(BASE_DIR, "app/sounds/shoot.mp3")
 SOUND_EXPLOSION = os.path.join(BASE_DIR, "app/sounds/explosion.mp3")
 SOUND_POWERUP = os.path.join(BASE_DIR, "app/sounds/powerup.mp3")
 SOUND_GAME_OVER = os.path.join(BASE_DIR, "app/sounds/game_over.mp3")
+
+
+DROPPING_ALIEN_SPEED = 5  # Speed of the dropping aliens
+DROPPING_ALIEN_SPAWN_RATE = 0.01  # Probability of spawning a dropping alien each frame
+
+DANGER_ZONE_Y = SCREEN_HEIGHT - 50  # Danger zone 50 pixels above the bottom
