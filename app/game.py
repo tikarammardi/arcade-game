@@ -10,6 +10,9 @@ from app.power_up_manager import PowerUpManager
 class Game:
     def __init__(self):
         pygame.init()
+        pygame.mixer.init()  # Initialize sound mixer
+
+        # Screen setup
         self.screen = pygame.display.set_mode((settings.SCREEN_WIDTH, settings.SCREEN_HEIGHT))
         pygame.display.set_caption("Arcade Game")
         self.clock = pygame.time.Clock()
@@ -30,6 +33,12 @@ class Game:
         # Power-up and shooting cooldowns
         self.current_power_up = None
         self.last_shot_time = 0  # Track time of last shot for bullet cooldown
+
+        # Load sounds
+        self.shoot_sound = pygame.mixer.Sound(settings.SOUND_SHOOT)
+        self.explosion_sound = pygame.mixer.Sound(settings.SOUND_EXPLOSION)
+        self.powerup_sound = pygame.mixer.Sound(settings.SOUND_POWERUP)
+        self.game_over_sound = pygame.mixer.Sound(settings.SOUND_GAME_OVER)
 
     def run(self):
         while self.running:
@@ -64,9 +73,8 @@ class Game:
         bullet_x = self.player.rect.centerx
         bullet_y = self.player.rect.top
         self.bullets.append(Bullet(bullet_x, bullet_y))
+        self.shoot_sound.play()  # Play shooting sound
         self.last_shot_time = pygame.time.get_ticks()
-
-    # app/game.py
 
     def update(self):
         # Spawn a new power-up if none is currently on the screen
@@ -82,19 +90,21 @@ class Game:
         # Check if player collected the power-up
         if self.current_power_up and self.player.rect.colliderect(self.current_power_up.rect):
             self.power_up_manager.activate_power_up(self.current_power_up)
+            self.powerup_sound.play()  # Play power-up sound
             self.current_power_up = None
 
         # Check power-up expiration and apply effects
         self.power_up_manager.check_expired()
         self.power_up_manager.handle_active_effects(self.player)
 
-        # Continue with other game updates...
+        # Handle player movement
         keys = pygame.key.get_pressed()
         if keys[pygame.K_LEFT]:
             self.player.move(-1)
         if keys[pygame.K_RIGHT]:
             self.player.move(1)
 
+        # Update bullets
         for bullet in self.bullets[:]:
             bullet.update()
             if bullet.rect.bottom < 0:
@@ -113,6 +123,7 @@ class Game:
         elif self.alien_manager.check_alien_reached_bottom():
             self.game_over = True
             self.score_manager.save_high_score()
+            self.game_over_sound.play()  # Play game-over sound
 
     def check_collisions(self):
         for bullet in self.bullets[:]:
@@ -120,6 +131,7 @@ class Game:
                 if bullet.rect.colliderect(alien.rect):
                     self.bullets.remove(bullet)
                     self.alien_manager.remove_alien(alien)
+                    self.explosion_sound.play()  # Play explosion sound
                     self.score_manager.update_score(1)
                     break
 

@@ -1,16 +1,16 @@
 import pygame
 from app import settings
 
-
 class Bullet:
     def __init__(self, x, y):
-        self.rect = pygame.Rect(x, y, settings.BULLET_WIDTH, settings.BULLET_HEIGHT)
-        self.color = settings.BULLET_COLOR
+        # Load and resize the bullet image
+        self.image = pygame.image.load(settings.IMAGE_BULLET).convert_alpha()
+        self.image = pygame.transform.scale(self.image, (settings.BULLET_WIDTH, settings.BULLET_HEIGHT))
+        self.rect = self.image.get_rect(center=(x, y))
         self.speed = settings.BULLET_SPEED
 
     def update(self):
-        # Move the bullet upward
         self.rect.y -= self.speed
 
     def draw(self, screen):
-        pygame.draw.rect(screen, self.color, self.rect)
+        screen.blit(self.image, self.rect)
