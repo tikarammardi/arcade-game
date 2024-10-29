@@ -22,7 +22,7 @@ An arcade-style game built with Python, Pygame, and managed using Poetry. This g
 ### Clone the Repository
 Clone this repository to your local machine:
 ```bash
-git clone <repository-url>
+git clone git@github.com:tikarammardi/arcade-game.git
 cd arcade-game
 ```
 
